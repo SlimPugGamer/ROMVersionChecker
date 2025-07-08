@@ -50,6 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
+# PS2 excutables
+*.elf
 # debug information files
 *.dwo
