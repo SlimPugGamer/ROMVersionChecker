@@ -15,13 +15,17 @@ jobs:
       - name: Install dependencies
         run: |
           apk add build-base git zip
+
       - uses: actions/checkout@v3
+
       - run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --prune --unshallow
+
       - name: Compile
         run: |
           make
+
       - name: Get short SHA
         id: slug
         run: echo "sha8=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
@@ -31,5 +35,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: romverchecker_${{ env.sha8 }}
-          path: romverchecker.elf
+          path: |
+            romverchecker.elf
+            romverchecker_pkd.elf
+            romverchecker_r4d.elf
+            romverchecker_r4d_pkd.elf
 
