@@ -25,7 +25,6 @@ jobs:
         id: slug
         run: echo "sha8=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
 
-      # (Optional) Keep artifact upload if needed separately
       - name: Upload artifacts
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
