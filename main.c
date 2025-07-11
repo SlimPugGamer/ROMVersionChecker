@@ -77,6 +77,10 @@ int main() {
         printf("Console Type: DEX (TEST)\n");
         scr_printf("Console Type: DEX (TEST)\n");
     }
+    else if (version_num == 250) {
+        printf("Console Type: PS2 TV\n");
+        scr_printf("Console Type: PS2 TV\n");
+    }
     else if (romver_buf[5] == 'C') {
         printf("Console Type: Retail (CEX)\n");
         scr_printf("Console Type: Retail (CEX)\n");
@@ -168,3 +172,4 @@ int main() {
     LoadELFFromFile("rom0:OSDSYS", 0, NULL);
     return 0;
 }
+
