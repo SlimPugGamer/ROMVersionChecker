@@ -63,6 +63,7 @@ int main() {
     int is_dex = (romver_buf[5] == 'D');
     int version_num = atoi(version_str);
     int fd;
+    // console variant detection start
     if (romver_buf[4] == 'T') {
         if (romver_buf[5] == 'Z') {
             printf("Console Type: Arcade)\n");
@@ -89,6 +90,8 @@ int main() {
         printf("Console Type: Unknown\n");
         scr_printf("Console Type: Unknown\n");
     }
+    //end
+    // PS2 Basic BootLoader detection start
     fd = open("mc0:/SYS-CONF/PS2BBL.INI", O_RDONLY);
     if (fd < 0) {
         fd = open("mc1:/SYS-CONF/PS2BBL.INI", O_RDONLY);
@@ -99,6 +102,8 @@ int main() {
         scr_printf("PS2BBL installed: yes\n");
         close(fd);
     }
+    //end
+    // Free Memory Card Boot detection start
     else {
         fd = open("mc0:/SYS-CONF/FREEMCB.CNF", O_RDONLY);
         if (fd < 0) {
@@ -115,6 +120,8 @@ int main() {
             close(fd);
         }
     }
+    //end
+    //MechaPwn check start
     if (is_dex) {
         printf("MechaPwnable: no\n");
         scr_printf("MechaPwnable: no\n");
@@ -127,6 +134,8 @@ int main() {
         printf("MechaPwnable: no\n");
         scr_printf("MechaPwnable: no\n");
     }
+    //end
+    //ProtoPwn check
     if (version_num <= 110) {
         printf("ProtoPwnable: yes\n");
         scr_printf("ProtoPwnable: yes\n");
@@ -137,6 +146,7 @@ int main() {
         scr_printf("ProtoPwnable: no\n");
         scr_printf("\n");
     }
+    //end
     // DESR check start //
     int psxver = open("rom0:PSXVER", O_RDONLY);
     if (psxver >= 0) {
