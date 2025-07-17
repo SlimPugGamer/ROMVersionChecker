@@ -40,27 +40,15 @@ jobs:
             romverchecker_pkd.elf
             romverchecker_r4d.elf
             romverchecker_r4d_pkd.elf
-      - name: Create or update 'latest' tag
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git tag -f latest
-          git push -f origin latest
-
-      - name: Create or update release on 'latest' tag
-        uses: softprops/action-gh-release@v1
+      - name: Create prerelease
+        uses: mathieucarbou/marvinpinto-action-automatic-releases@latest
         with:
-          tag_name: latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload release assets
-        uses: softprops/action-gh-release@v1
-        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          automatic_release_tag: "latest"
+          title: "ROMVER Checker nightly test build"
           files: |
             romverchecker.elf
             romverchecker_pkd.elf
             romverchecker_r4d.elf
             romverchecker_r4d_pkd.elf
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
