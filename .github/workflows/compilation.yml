@@ -40,13 +40,17 @@ jobs:
             romverchecker_pkd.elf
             romverchecker_r4d.elf
             romverchecker_r4d_pkd.elf
-      - name: Create prerelease
-        uses: mathieucarbou/marvinpinto-action-automatic-releases@latest
+      
+      - name: Debug - Check ELF file exists
+        run: ls -lah romverchecker.elf
+
+      - name: Create release
+        if: github.ref == 'refs/heads/ROMVersionChecker'
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: true
           automatic_release_tag: "latest"
-          title: "ROMVER Checker nightly test build"
+          title: "ROMVersionChecker nightly test builds"
           files: |
             romverchecker.elf
             romverchecker_pkd.elf
