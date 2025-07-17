@@ -48,14 +48,14 @@ jobs:
           git push -f origin latest
 
       - name: Create or update release on 'latest' tag
-        uses: softprops/action-gh-release@v4
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload release assets (warning untested)
-        uses: softprops/action-gh-release@v4
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
         with:
           files: |
             romverchecker.elf
