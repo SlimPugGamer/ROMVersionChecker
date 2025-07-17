@@ -45,7 +45,7 @@ jobs:
         run: ls -lah romverchecker.elf
 
       - name: Create release
-        if: github.ref == 'refs/heads/ROMVersionChecker'
+        if: github.ref == 'refs/heads/main'
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
