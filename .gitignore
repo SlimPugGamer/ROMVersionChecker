@@ -52,5 +52,8 @@ Mkfile.old
 dkms.conf
 # PS2 executables
 *.elf
+# VS 2022 stuff
+*.vcxproj
+*.sln
 # debug information files
 *.dwo
