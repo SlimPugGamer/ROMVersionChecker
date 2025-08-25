@@ -40,6 +40,8 @@ jobs:
             romverchecker_pkd.elf
             romverchecker_r4d.elf
             romverchecker_r4d_pkd.elf
+            romverchecker_arcade.elf
+            romverchecker_arcade_pkd.elf
       
       - name: Debug - Check ELF file exists
         run: ls -lah romverchecker.elf
