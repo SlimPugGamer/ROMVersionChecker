@@ -122,8 +122,10 @@ int main() {
     memcpy(version_str, romver_buf, 4);
     int is_dex = (romver_buf[5] == 'D' || (romver_buf[4] == 'T' && romver_buf[5] == 'Z'));
     int version_num = atoi(version_str);
+    int bootelffound = open("mc0:/BOOT/BOOT.ELF", O_RDONLY);
     int fd;
     int is_protkrnl = open("rom0:OSBROWS", O_RDONLY);
+
     if (romver_buf[4] == 'T') {
         if (romver_buf[5] == 'Z') {
             printf("Console Type: Arcade\n");
@@ -259,7 +261,22 @@ int main() {
                     if (!(padinfo.btns & PAD_CROSS)) {
                         printf("Exiting to OSDSYS\n");
                         scr_printf("Exiting to OSDSYS\n");
-                        LoadELFFromFile("rom0:OSDSYS", 0, NULL);
+                        // bit of a hack for OpenTuna users so they don't need to re-exploit after exit
+                        if (bootelffound >= 0) {
+                            close(bootelffound);
+                            LoadELFFromFile("mc0:/BOOT/BOOT.ELF", 0, NULL);
+                        }
+                        else {
+                            bootelffound = open("mc1:/BOOT/BOOT.ELF", O_RDONLY);
+                            if (bootelffound >= 0) {
+                                close(bootelffound);
+                                LoadELFFromFile("mc1:/BOOT/BOOT.ELF", 0, NULL);
+                            }
+                            else {
+                                LoadELFFromFile("rom0:OSDSYS", 0, NULL);
+                            }
+                        }
+
                         return 0;
                     }
                 }
