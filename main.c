@@ -14,6 +14,8 @@
 #include <libpad.h>
 #include <libmc.h>
 #include <iopcontrol_special.h>
+#include "modelname.h"
+#include <libcdvd-common.h>
 
 extern unsigned char ps2dev9_irx[];
 extern unsigned int size_ps2dev9_irx;
@@ -21,6 +23,8 @@ extern unsigned char udptty_standalone_irx[];
 extern unsigned int size_udptty_standalone_irx;
 extern unsigned char ioprp[];
 extern unsigned int size_ioprp;
+char romver_buf[16] = { 0 };
+char* ConsoleROMVER = romver_buf;
 
 void reload_modules_withiopreset() {
     SifIopReset("", 0);
@@ -54,6 +58,7 @@ int main() {
     SifInitRpc(0);
     //patch for OSDMenu
     reload_modules_withiopreset();
+
     //patch end
     //patch for Arcade
 #ifdef ARCADE
@@ -92,7 +97,6 @@ int main() {
         while (1) asm("nop");
     }
 
-    char romver_buf[16] = { 0 };
     int bytes = read(romfd, romver_buf, sizeof(romver_buf) - 1);
     close(romfd);
 
@@ -152,6 +156,18 @@ int main() {
         printf("Console Type: Unknown\n");
         scr_printf("Console Type: Unknown\n");
     }
+    char* r = strchr("AECJT", romver_buf[4]);
+    printf("Region: %s\n", r ? (r[0] == 'A' ? "America" : r[0] == 'E' ? "Europe" : r[0] == 'C' ? "China" : r[0] == 'J' ? "Japan" : "TOOL") : "Unknown");
+    scr_printf("Region: %s\n", r ? (r[0] == 'A' ? "America" : r[0] == 'E' ? "Europe" : r[0] == 'C' ? "China" : r[0] == 'J' ? "Japan" : "TOOL") : "Unknown");
+    
+#if ARCADE
+#else
+    ModelNameInit();
+    const char* model = ModelNameGet();
+    scr_printf("Model: %s\n", model);
+    printf("Model: %s\n", model);
+#endif
+
     fd = open("mc0:/SYS-CONF/PS2BBL.INI", O_RDONLY);
     if (fd < 0) {
         fd = open("mc1:/SYS-CONF/PS2BBL.INI", O_RDONLY);
@@ -222,6 +238,7 @@ int main() {
                 printf("DEX PS2: FMCB may not work use PS2BBL\n");
                 scr_printf("DEX PS2: FMCB may not work use PS2BBL\n");
             }
+
             // DEX check end //
             // bootrom patch check start //
             else {
@@ -288,3 +305,5 @@ int main() {
     return 0;
 
 }
+
+
