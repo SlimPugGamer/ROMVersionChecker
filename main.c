@@ -244,7 +244,7 @@ int main() {
             else {
                 if (version_num >= 230) {
                     printf("FMCB/PS2BBL patched. Use OpenTuna if you want to start FMCB/PS2BBL.\n");
-                    scr_printf("FMCB patched. Use OpenTuna if you want to start FMCB/PS2BBL.\n");
+                    scr_printf("FMCB/PS2BBL patched. Use OpenTuna if you want to start FMCB/PS2BBL.\n");
                 }
                 else {
                     printf("FMCB/PS2BBL not patched. You can install it normally.\n");
@@ -305,5 +305,6 @@ int main() {
     return 0;
 
 }
+
 
 
