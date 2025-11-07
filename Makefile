@@ -6,6 +6,7 @@ ARCADE_TARGET = romverchecker_arcade
 ARCADE_TARGET_PACKED = romverchecker_arcade_pkd
 R4D_ARCADE_TARGET = romverchecker_r4d_arcade
 R4D_ARCADE_TARGET_PACKED = romverchecker_r4d_arcade_pkd
+ROMVERCHK_SASDEST = SAS/DST_ROMVERCHK/ROMVERCHK.ELF
 EE_OBJS = main.o ps2dev9.o udptty_standalone.o modelname.o
 EE_OBJS_R4D = main_r4d.o ps2dev9.o udptty_standalone.o modelname.o
 EE_OBJS_ARCADE = main_arcade.o ps2dev9.o udptty_standalone.o IOPRP_FILEIO.o modelname.o
@@ -30,12 +31,12 @@ EE_LIBS_R4D_ARCADE = $(EE_LIBS_COMMON) -lpadx
 EE_NEWLIB_NANO = 1
 NEWLIB_NANO = 1
 
-all: $(PACKED_BIN) $(PACKED_BIN_R4D) $(PACKED_BIN_ARCADE)
+all: $(PACKED_BIN) $(ROMVERCHK_SASDEST) $(PACKED_BIN_R4D) $(PACKED_BIN_ARCADE)
 
 clean:
 	rm -f $(TARGET).elf $(EE_BIN_R4D) $(EE_BIN_ARCADE) $(EE_BIN_R4D_ARCADE) \
 	      $(EE_OBJS) $(EE_OBJS_R4D) $(EE_OBJS_ARCADE) $(EE_OBJS_R4D_ARCADE) \
-	      $(PACKED_BIN) $(PACKED_BIN_R4D) $(PACKED_BIN_ARCADE) $(PACKED_BIN_R4D_ARCADE) \
+	      $(PACKED_BIN) $(ROMVERCHK_SASDEST) $(PACKED_BIN_R4D) $(PACKED_BIN_ARCADE) $(PACKED_BIN_R4D_ARCADE) \
 	      IOPRP_FILEIO.c IOPRP_FILEIO.o
 
 %_r4d.o: %.c
@@ -55,6 +56,7 @@ IOPRP_FILEIO.c: IOPRP_FILEIO.IMG
 
 IOPRP_FILEIO.o: IOPRP_FILEIO.c
 	$(EE_CC) $(EE_CFLAGS) -c $< -o $@
+
 
 $(EE_ASM_DIR)ps2dev9.c: $(PS2SDK)/iop/irx/ps2dev9.irx | $(EE_ASM_DIR)
 	/usr/local/ps2dev/ps2sdk/bin/bin2c $< $@ $(*F)_irx
@@ -85,6 +87,15 @@ $(PACKED_BIN_ARCADE): $(EE_BIN_ARCADE)
 
 $(PACKED_BIN_R4D_ARCADE): $(EE_BIN_R4D_ARCADE)
 	ps2-packer $< $@
+
+$(ROMVERCHK_SASDEST): $(PACKED_BIN)
+	@mkdir -p $(dir $@)
+	cp $< $@
+
+
+include $(PS2SDK)/samples/Makefile.pref
+include $(PS2SDK)/samples/Makefile.eeglobal
+
 
 include $(PS2SDK)/samples/Makefile.pref
 include $(PS2SDK)/samples/Makefile.eeglobal
