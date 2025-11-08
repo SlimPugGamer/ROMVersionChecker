@@ -1,0 +1,4 @@
+[config]
+name = "DST_ROMVERCHK"
+exclude = [ "psu.toml" ]
+timestamp = "2098-12-26 14:12:02"
